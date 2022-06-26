@@ -7,10 +7,10 @@ public:
         
         if(dp[amount] != -1) return dp[amount];
         
-        int ans=INT_MAX;
-        for(int coin:coins){
-                if(amount-coin>=0){
-                      ans=min(ans+0LL,1LL+Change(coins,amount-coin,dp));  
+        int ans=INT_MAX-1;
+        for(int i=0; i<coins.size(); i++){
+                if(amount-coins[i]>=0){
+                      ans=min(ans, 1+Change(coins,amount-coins[i],dp));  
                 }
         }
         dp[amount]=ans;
@@ -20,7 +20,9 @@ public:
         // dp of amounts
         int dp[10001];
         memset(dp,-1,sizeof(dp));
+        
         int ans=Change(coins,amount,dp);
-        return ans == INT_MAX ? -1 : ans;  
+        
+        return ans == INT_MAX-1 ? -1 : ans;  
     }
 };
