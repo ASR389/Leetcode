@@ -7,23 +7,22 @@ using namespace std;
  // } Driver Code Ends
 class Solution{
     public:
-    long long solve(int n, int k, long long dp[]){
+    long long solve(int n, int k){
         //for mod
         long long mod = 1000000007;
        //base case
-       if(n==1) return k;
-       if(n==2) return k*k;
+    long long dp[n+1];
+    dp[1] = k;
+    dp[2] = k*k;
        
-       if(dp[n]!=-1) return dp[n];
-       
-       dp[n] = ((k-1) * ((solve(n-1, k, dp)%mod+solve(n-2, k, dp)%mod)))%mod;
+    //   solve using tabulation
+       for(int i=3; i<=n; i++){
+       dp[i] = ((k-1) * ((dp[i-1]%mod+dp[i-2]%mod)))%mod;
+       }
        return dp[n];
     }
     long long countWays(int n, int k){
-        long long dp[n+1];
-        memset(dp,-1,sizeof(dp));
-        
-        return solve(n,k,dp);
+        return solve(n,k);
     }
 };
 
