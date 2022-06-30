@@ -1,32 +1,25 @@
 class Solution {
-    
-    int helper( int * arr , int n , int target){
-        
-        // base case
-      
-        if( n == 1) {
-            
-            if( arr[0] == 0 && target == 0) return 2;
-            if(arr[0] == abs(target)) return 1;
-            else return 0;
+public:
+    void solve(vector<int>& nums, int target, int i, int &count, int sum){
+        if(i == nums.size()){
+            if(target == sum){
+                count++;
+            }
+            return;
         }
         
+        int curr = nums[i];
         
-        return helper( arr+1 , n-1 , target - arr[0]) + helper( arr+1 , n-1 , target + arr[0]);
-        
+        solve(nums, target, i+1, count, sum+curr);
+        solve(nums, target, i+1, count, sum-curr);
     }
-    
-public:
     int findTargetSumWays(vector<int>& nums, int target) {
         
-        int arr[nums.size()];
         
-       for(int i = 0 ; i < nums.size() ; i++){
-           
-           arr[i] = nums[i];
-       }
-        
-        return helper( arr , nums.size() , target);
-        
+        int index = 0;
+        int count = 0;
+        int sum = 0;
+        solve(nums, target, index, count, sum);
+        return count;
     }
 };
