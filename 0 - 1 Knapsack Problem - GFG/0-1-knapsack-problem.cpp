@@ -13,6 +13,7 @@ class Solution
         
         if(dp[n-1][W]!=-1) return dp[n-1][W];
 
+// agar weight chor ki capapcity se jayada hai toh dusre weight dekho
         if(wt[n-1] > W) return solve(W, wt, val, n-1, dp);
         
         // now two case 
@@ -25,14 +26,14 @@ class Solution
             dp[n-1][W] = max(include,exclude);
             return dp[n-1][W];
         }
-        // return ans;
+
     }
     //Function to return max value that can be put in knapsack of capacity W.
     int knapSack(int W, int wt[], int val[], int n) 
     { 
         // we take 2D-dp array because 2 variables are changing
         // 1->index(n) 2-> W capacity
-        int dp[101][10001];
+        int dp[n+1][10001];
         memset(dp,-1,sizeof(dp));
        return solve(W,wt,val,n,dp);
     }
