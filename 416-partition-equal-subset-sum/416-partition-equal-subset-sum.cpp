@@ -1,26 +1,32 @@
+int dp[201][100001];
 class Solution {
 public:
-    bool solve(vector<int> &nums, int &sum, int currSum, int i, vector<vector<int>> &dp)
-{
-    if(2 * currSum == sum)
-        return true;
-    
-    if(2 * currSum > sum ||  i == nums.size())
-        return false;
-    
-    if(dp[i][currSum] != -1)
-        return dp[i][currSum];
-    
-    return dp[i][currSum] = solve(nums, sum, currSum, i + 1, dp) || solve(nums, sum, currSum + nums[i], i + 1, dp);      }
-    
+    bool solve(vector<int>& nums,int sum, int n){
+        if(sum == 0) return true;
+        if(n == 0 && sum > 0) return false;
+        
+        if(dp[n][sum]!=-1) return dp[n][sum];
+        
+        if(nums[n-1] <= sum){
+            int incl = solve(nums,sum-nums[n-1],n-1);
+            int excl = solve(nums,sum,n-1);
+            return dp[n][sum]=(incl || excl);
+        }
+        else{
+            return dp[n][sum]=solve(nums,sum,n-1);
+        }
+        // return 0;     
+    }
     bool canPartition(vector<int>& nums) {
-         int sum = 0;
-         for(auto &i : nums)
-           sum += i;
-    
-        vector<vector<int>> dp(nums.size() + 1, vector<int> (20001, -1));
-        return solve(nums, sum, 0, 0, dp);
-}
-
-
+        memset(dp,-1,sizeof(dp));
+        int sum =0;
+        for(int i=0; i<nums.size(); i++){
+            sum+=nums[i];
+        }
+        if(sum%2!=0)return false;
+        
+        int n = nums.size();
+        int target = sum/2;
+        return solve(nums,target,n);
+    }
 };
