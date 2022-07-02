@@ -6,30 +6,27 @@ using namespace std;
 
  // } Driver Code Ends
 //User function template for C++
-
 class Solution{   
 public:
+bool solve(int n, vector<int>arr, int sum, int dp[][10001]){
+    //base case
+    if(sum == 0) return true;
+    if(n == 0 && sum > 0) return false;
+    
+    if(dp[n][sum]!=-1) return dp[n][sum];
+    
+    if(arr[n - 1] <= sum){
+        return dp[n][sum] = (solve(n- 1, arr, sum - arr[n - 1],dp) || solve(n - 1, arr, sum,dp));
+    }
+    else{
+        return dp[n][sum] = solve(n - 1, arr, sum,dp);
+    }
+}
     bool isSubsetSum(vector<int>arr, int sum){
-        // code here 
-        int n = arr.size();
-        bool dp[n+1][sum+1];
-        for(int i=0;i<=n;i++){
-            dp[i][0] = true;
-        }
-        for(int i=1;i<=sum;i++){
-            dp[0][i] = false;
-        }
-        for(int i=1;i<=n;i++){
-            for(int j=1;j<=sum;j++){
-                if(arr[i-1]<=j){
-                    dp[i][j]= dp[i-1][j-arr[i-1]] || dp[i-1][j];
-                }
-                else{
-                    dp[i][j]= dp[i-1][j];
-                }
-            }
-        }
-        return dp[n][sum];
+        int dp[101][10001];
+        memset(dp,-1,sizeof(dp));
+      return solve(arr.size(),arr,sum,dp); 
+
     }
 };
 
