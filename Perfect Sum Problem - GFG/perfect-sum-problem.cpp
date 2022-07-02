@@ -16,7 +16,9 @@ int perfectSum(int arr[], int n, int sum)
      for(int j=0;j<sum+1;j++){
          dp[0][j]=0;
      }
-     dp[0][0]=1;
+     for(int i =0; i<n; i++){
+     dp[i][0]=1;
+     }
       
       //now our main algo
       
