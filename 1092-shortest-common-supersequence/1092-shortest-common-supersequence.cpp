@@ -2,10 +2,10 @@ class Solution {
 public:
     string shortestCommonSupersequence(string s, string t) {
         
-        if(s==t) return s;
+        if(s==t) return s;  //edge case
         
         int n = s.size(), m = t.size();
-        vector<vector<int>> dp(n+1,vector<int>(m+1));
+        int dp[1001][1001];
         
 		// INITIALIZATION
         for(int i=0;i<=n;i++) dp[i][0]=0;
@@ -42,7 +42,9 @@ public:
 		// REVERSING LCS AS IT WAS CALCULATED FROM TOP DOWN DP
         reverse(lcs.begin(),lcs.end());
         
-        i=0,j=0;
+        //till now we get LCS string or wee say code is same as print LCS
+        
+        i=0,j=0;  //taking 3 pointer for s,t,lcs
         int k=0;
 		
 		// MERGING LCS & ADDING OTHER Non-Duplicate CHARACTERS
@@ -70,6 +72,8 @@ public:
                 }
             }
         }
+        
+        //for left over elements
         
         while(i<n){
             ans.push_back(s[i]);
