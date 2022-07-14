@@ -1,90 +1,53 @@
 class Solution {
 public:
-    string shortestCommonSupersequence(string s, string t) {
+    string shortestCommonSupersequence(string a, string b) {
         
-        if(s==t) return s;  //edge case
-        
-        int n = s.size(), m = t.size();
+        int m = a.size();
+        int n = b.size();
         int dp[1001][1001];
         
-		// INITIALIZATION
-        for(int i=0;i<=n;i++) dp[i][0]=0;
-        for(int i=0;i<=m;i++) dp[0][m]=0;
+        for(auto i : a) dp[i][0] = 0;
+        for(auto i : b) dp[0][i] = 0;
         
-		// Finding LCS
-        for(int i=1;i<=n;i++){
-            for(int j=1;j<=m;j++){
-                if(s[i-1]==t[j-1])
-                    dp[i][j]= 1 + dp[i-1][j-1];
+        for(int i = 1; i<m+1; i++){
+            for(int j = 1; j<n+1; j++){
+                if(a[i-1] == b[j-1])
+                    dp[i][j] = 1+dp[i-1][j-1];
                 else
-                    dp[i][j] = max(dp[i-1][j],dp[i][j-1]);
+                    dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
             }
         }
         
-        string lcs,ans;
+        int i = m;
+        int j = n;
+        string s = "";
         
-		//EVALUATING LCS FROM TABLE & STORING IT
-        int i = n, j = m;
         while(i>0 && j>0){
-            if(s[i-1]==t[j-1]){
-                lcs.push_back(s[i-1]);
+            if(a[i-1]==b[j-1]){
+                s.push_back(a[i-1]);
                 i--;
                 j--;
             }
-            else{
-                if(dp[i-1][j]>dp[i][j-1])
-                    i--;
-                else 
-                    j--;
+            else if(dp[i][j-1]>dp[i-1][j]){
+                s.push_back(b[j-1]);
+                j--;
+            }
+            else{                       //if(dp[i-1][j]>dp[i][j-1]) don't write as no else after if so TLE
+                s.push_back(a[i-1]);
+                i--;
             }
         }
         
-		// REVERSING LCS AS IT WAS CALCULATED FROM TOP DOWN DP
-        reverse(lcs.begin(),lcs.end());
-        
-        //till now we get LCS string or wee say code is same as print LCS
-        
-        i=0,j=0;  //taking 3 pointer for s,t,lcs
-        int k=0;
-		
-		// MERGING LCS & ADDING OTHER Non-Duplicate CHARACTERS
-        while(i<n && j<m){
-            if(s[i]==t[j]){
-                ans.push_back(s[i]);
-                i++;
-                j++;
-                k++;
-            } 
-            else{
-                if(s[i]==lcs[k]){
-                    ans.push_back(t[j]);
-                    j++;
-                }
-                else if(t[j]==lcs[k]){
-                    ans.push_back(s[i]);
-                    i++;
-                }
-                else{
-                    ans.push_back(s[i]);
-                    ans.push_back(t[j]);
-                    i++;
-                    j++;
-                }
-            }
+        while(i>0){
+            s.push_back(a[i-1]);
+            i--;
+        }
+        while(j>0){
+            s.push_back(b[j-1]);
+            j--;
         }
         
-        //for left over elements
-        
-        while(i<n){
-            ans.push_back(s[i]);
-            i++;
-        }
-        
-        while(j<m){
-            ans.push_back(t[j]);
-            j++;
-        }
-        
-        return ans;
+        reverse(s.begin(),s.end());
+        return s;
     }
 };
