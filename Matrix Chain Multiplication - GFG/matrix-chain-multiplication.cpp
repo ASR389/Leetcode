@@ -15,16 +15,13 @@ int solve(int arr[], int i, int j){
     
     if(dp[i][j]!=-1) return dp[i][j];
     
-    int mn = INT_MAX;
+    int ans = INT_MAX;
     for(int k = i; k<=j-1; k++){
         //eg ABCD    for A*B          forC*D                for A*D
         int temp = solve(arr,i,k) + solve(arr,k+1,j) + (arr[i-1]*arr[k]*arr[j]);
-        if(temp<mn){
-            mn = temp;
-            dp[i][j] = mn;
-        }
+        ans = min(ans,temp);
     }
-    return dp[i][j];
+    return dp[i][j] = ans;
 }
     int matrixMultiplication(int n, int arr[])
     {
