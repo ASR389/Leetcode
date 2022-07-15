@@ -17,6 +17,7 @@ int solve(int arr[], int i, int j){
     
     int mn = INT_MAX;
     for(int k = i; k<=j-1; k++){
+        //eg ABCD    for A*B          forC*D                for A*D
         int temp = solve(arr,i,k) + solve(arr,k+1,j) + (arr[i-1]*arr[k]*arr[j]);
         if(temp<mn){
             mn = temp;
