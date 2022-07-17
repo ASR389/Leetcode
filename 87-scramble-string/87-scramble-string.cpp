@@ -2,18 +2,19 @@ class Solution {
 public:
     unordered_map<string , bool>mp;
     bool solve(string s1, string s2){
-        //base case
-        if(s1.compare(s2) == 0) return true; // checks if length of both the string is equal or not
-        
-        if(s1.length()<=1) return false; // agar string 1 ya 1 se choti ho jati hai toh return false
-        
         int n = s1.size();
-        bool flag = false;
+        //base case
+        if(s1 == s2) return true; // checks if length of both the string is equal or not
         
+        // if(n<=1) return false; // agar string 1 ya 1 se choti ho jati hai toh return false
+          
         // making key    "s1"space"s2"  "s1 s2"
-        string key = s1;
-        key.push_back(' ');
-        key.append(s2);
+        
+        // string key = s1;
+        // key.push_back(' ');
+        // key.append(s2);
+        
+        string key = s1+' '+s2;   //simple way of making key
         
         // checking key in map before function call 
         
@@ -22,7 +23,7 @@ public:
             return mp[key];
         
         //function call
-        
+        bool flag = false; 
         for (int i = 1; i <= n - 1; i++) {     
             bool con1 = (solve(s1.substr(0, i), s2.substr(n - i, i))  &&      //for (gr)(eat) -> (eat)(gr)
                          solve(s1.substr(i, n - i), s2.substr(0, n - i)) );
