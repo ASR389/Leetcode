@@ -1,24 +1,21 @@
 class Solution {
 public:
-    int solve(vector<int>&nums, int n, int dp[]){
-        if(n<0) return 0;
-        if(n == 0) return nums[0];
+    int dp[405];
+    int solve(vector<int>nums, int n){
+        //base condition
+        if(n<0) return 0;  //imp to remember as n-1 reaches here
+        if(n==0) return nums[0];
         
-        if(dp[n] !=-1) return dp[n];
+        if(dp[n]!=-1)return dp[n];
         
-        long long incl = solve(nums, n-2, dp)+nums[n];
-        long long exclu = solve(nums , n-1, dp);
+        int incl = nums[n] + solve(nums,n-2);
+        int excl = solve(nums,n-1);
         
-        dp[n] = max(incl , exclu);
-        return dp[n];
+        int ans = max(incl,excl);
+        return dp[n] = ans;
     }
     int rob(vector<int>& nums) {
-        int dp[1001];
         memset(dp,-1,sizeof(dp));
-        
-        int n = nums.size();
-        int ans = solve(nums,n-1, dp);
-        return ans;
-        
+        return solve(nums,nums.size()-1);    
     }
 };
