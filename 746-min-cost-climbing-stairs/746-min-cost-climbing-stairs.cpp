@@ -1,6 +1,6 @@
 class Solution {
 public:
-    int dp[1001];
+    int dp[1000];
     int find(int n, vector<int>& cost){
         if(n>=cost.size())
             return 0;
@@ -12,7 +12,7 @@ public:
     }
     int minCostClimbingStairs(vector<int>& cost) {
         
-        for( int i=0; i<1001; i++) dp[i]=-1;
+        for( int i=0; i<1000; i++) dp[i]=-1;
         return min(find(0,cost), find(1,cost));
     }
 };
