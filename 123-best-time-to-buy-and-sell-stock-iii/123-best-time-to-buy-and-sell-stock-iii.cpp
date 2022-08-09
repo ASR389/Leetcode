@@ -1,23 +1,77 @@
+/*Buy and Sell Stock - III
+You are given an array prices where prices[i] is the price of a given stock on the ith day.
 
-/*
-Suppose you make some profit p1 by doing your first transaction in the stock market. Now you are excited to purchase another stock to earn more profit. Suppose the price of the second stock you aim to buy is x. Now, for you, the net effective price that you are spending from your pocket for this stock will be x-p1, because you already have p1 bucks in your hand. Now, if you sell the second stock at price y your net profit p2 will be p2 = y - (x-p1). You have to do nothing but maximize this profit p2. Here's the code:
+Find the maximum profit you can achieve. You may complete at most two transactions.
+
+Note: You may not engage in multiple transactions simultaneously (i.e., you must sell the stock before you buy again).
+
+Anwer:
+
+
+
+Brute Force O(N^2) is by divide and conquer is 
+
+For each point we create a line and we use buy stock I‘s concept, what was it … to find the max profit in each of those two parts.
+Time complexity is O(N^2)
 */
+
+// class Solution {
+// public:
+//     int maxProfit(vector<int>& prices) {
+//         int n=prices.size();
+//         int ans=0;
+//         for(int i=0;i<n;i++){
+//             //for left side computation
+//             int minsofar=INT_MAX;
+//             int profit=0;
+//             for(int k=0;k<=i;k++){
+//                 if(minsofar>prices[k]){
+//                     minsofar=prices[k];
+//                 }
+//                 profit=max(profit,prices[k]-minsofar);
+//             }
+//             //for right side computation
+//             int minsofar2=INT_MAX;
+//             int profit2=0;
+//             for(int j=i+1;j<n;j++){
+//                 if(minsofar2>prices[j]){
+//                     minsofar2=prices[j];
+//                 }
+//                 profit2=max(profit2,prices[j]-minsofar2);
+//             }
+//             ans=max(ans,profit+profit2);
+//         }
+//         return ans;
+//     }
+// };
+
+// Optimal
 
 class Solution {
 public:
-    int maxProfit(vector<int>& prices) {
-        if(!prices.size())
-            return 0;
-        int buy1    = INT_MAX;
-        int profit1 = INT_MIN;
-        int buy2    = INT_MAX;
-        int profit2 = INT_MIN;
-        for(int i = 0; i < prices.size(); i++){
-            buy1    = min(buy1, prices[i]);
-            profit1 = max(profit1, prices[i] - buy1);
-            buy2    = min(buy2, prices[i] - profit1);
-            profit2 = max(profit2, prices[i] - buy2);
+    int maxProfit(vector<int>& nums) {
+        // int ans=INT_MIN;
+        int n=nums.size();
+        vector<int>left(n),right(n);
+        //fill first transaction left B----->S | partition
+        int leftmin=nums[0];
+        for(int i=1;i<n;i++)
+        {
+            leftmin=min(leftmin,nums[i]);
+            left[i]=max(left[i-1],nums[i]-leftmin);
         }
-        return profit2;
+        //fill second transaction right to left towards partiton B<------S | partition
+        int rightmax=nums[n-1];
+        for(int i=n-2;i>=0;i--)
+        {
+            rightmax=max(rightmax,nums[i]);
+            right[i]=max(right[i+1],rightmax-nums[i]);
+        }
+        //find the max-profit value
+        int ans=right[0];
+        for(int i=1;i<n;i++){
+            ans=max(ans,left[i-1]+right[i]);
+        }
+        return ans;
     }
 };
