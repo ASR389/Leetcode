@@ -1,53 +1,15 @@
-class Solution 
-{
+class Solution {
 public:
-    int value(char r)
-    {
-        if (r == 'I')
-            return 1;
-        if (r == 'V')
-            return 5;
-        if (r == 'X')
-            return 10;
-        if (r == 'L')
-            return 50;
-        if (r == 'C')
-            return 100;
-        if (r == 'D')
-            return 500;
-        if (r == 'M')
-            return 1000;
+    int romanToInt(string s) {
 
-        return -1;
+// we have to care about when to minus some element and when  to add some element 
+ // vi -> 5+1 
+ // iv -> -1+5
+    unordered_map<char,int>m={{'I',1},{'V',5},{'X',10},{'L',50},{'C',100},{'D',500},{'M',1000}};
+    int ans =0;
+     for(int i=0;i<s.size();i++){
+         ans+= m[s[i]]< m[s[i+1]] ?-m[s[i]] :m[s[i]];
     }
-    int romanToInt(string s) 
-    {
-
-    int res = 0;
- 
-
-    for (int i = 0; i < s.length(); i++) {
-
-        int s1 = value(s[i]);
- 
-        if (i + 1 < s.length()) {
-
-            int s2 = value(s[i + 1]);
- 
-            if (s1 >= s2) {
-   
-                res = res + s1;
-            }
-            else {
-        
-                res = res + s2 - s1;
-                i++;
-            }
-        }
-        else {
-            res = res + s1;
-        }
-    }
-    return res;
+    return ans ;
     }
 };
